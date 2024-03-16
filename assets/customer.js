@@ -1,85 +1,170 @@
 const selectors = {
+  customerBody:  document.body,
   customerAddresses: '[data-customer-addresses]',
-  addressCountrySelect: '[data-address-country-select]',
-  addressContainer: '[data-address]',
-  toggleAddressButton: 'button[aria-expanded]',
-  cancelAddressButton: 'button[type="reset"]',
-  deleteAddressButton: 'button[data-confirm-message]',
+  addressModal: '[aria-modal-expanded]',
+  addressScroll: '[data-scroll]',
+  addressCloseButton: 'button[data-close]',
+  addAddressButton: 'button[data-add]',
+  editAddressButton: 'button[data-edit]',
+  deleteAddressButton: 'button[data-delete]',
+  countrySelectors: 'select[data-country-selector]'
 };
 
 const attributes = {
-  expanded: 'aria-expanded',
-  confirmMessage: 'data-confirm-message',
+  expanded: 'aria-modal-expanded'
 };
 
 class CustomerAddresses {
   constructor() {
-    this.elements = this._getElements();
+    this.elements = this.getElements();
     if (Object.keys(this.elements).length === 0) return;
-    this._setupCountries();
-    this._setupEventListeners();
+    this.setupcountrySelectors();
+    this.setupEventListeners();
   }
 
-  _getElements() {
+  getElements() {
     const container = document.querySelector(selectors.customerAddresses);
-    return container
-      ? {
-          container,
-          addressContainer: container.querySelector(selectors.addressContainer),
-          toggleButtons: document.querySelectorAll(selectors.toggleAddressButton),
-          cancelButtons: container.querySelectorAll(selectors.cancelAddressButton),
-          deleteButtons: container.querySelectorAll(selectors.deleteAddressButton),
-          countrySelects: container.querySelectorAll(selectors.addressCountrySelect),
-        }
-      : {};
+    return container ? {
+      container,
+      addressScroll: container.querySelector(selectors.addressScroll),
+      addressModal: container.querySelector(selectors.addressModal),
+      closeButtons: document.querySelectorAll(selectors.addressCloseButton),
+      addButtons: document.querySelectorAll(selectors.addAddressButton),
+      editButtons: container.querySelectorAll(selectors.editAddressButton),
+      deleteButtons: container.querySelectorAll(selectors.deleteAddressButton),
+      countrySelectors: container.querySelectorAll(selectors.countrySelectors)
+    } : {};
   }
 
-  _setupCountries() {
-    if (Shopify && Shopify.CountryProvinceSelector) {
-      // eslint-disable-next-line no-new
-      new Shopify.CountryProvinceSelector('AddressCountryNew', 'AddressProvinceNew', {
-        hideElement: 'AddressProvinceContainerNew',
-      });
-      this.elements.countrySelects.forEach((select) => {
-        const formId = select.dataset.formId;
-        // eslint-disable-next-line no-new
-        new Shopify.CountryProvinceSelector(`AddressCountry_${formId}`, `AddressProvince_${formId}`, {
-          hideElement: `AddressProvinceContainer_${formId}`,
-        });
-      });
-    }
-  }
-
-  _setupEventListeners() {
-    this.elements.toggleButtons.forEach((element) => {
-      element.addEventListener('click', this._handleAddEditButtonClick);
+  setupEventListeners() {
+    this.elements.countrySelectors.forEach((element) => {
+      element.addEventListener('change', this.handleCountryProvincesOnSelect);
     });
-    this.elements.cancelButtons.forEach((element) => {
-      element.addEventListener('click', this._handleCancelButtonClick);
+    this.elements.addButtons.forEach((element) => {
+      element.addEventListener('click', this.handleShowAddressModalOnButtonClick);
+    });
+    this.elements.closeButtons.forEach((element) => {
+      element.addEventListener('click', this.handleCloseAddressModalOnButtonClick.bind(this));
+    });
+    this.elements.editButtons.forEach((element) => {
+      element.addEventListener('click', this.handleEditAddressModalOnButtonClick);
     });
     this.elements.deleteButtons.forEach((element) => {
-      element.addEventListener('click', this._handleDeleteButtonClick);
+      element.addEventListener('click', this.handleDeleteAddressOnButtonClick);
     });
   }
 
-  _toggleExpanded(target) {
-    target.setAttribute(attributes.expanded, (target.getAttribute(attributes.expanded) === 'false').toString());
+  setupcountrySelectors() {
+    if(this.elements.countrySelectors.length < 1) return;
+    this.elements.countrySelectors.forEach(select => {
+      const selectedCountry = this.getSelectedCountry(select);
+      if(!selectedCountry) return;
+
+      const provinces = selectedCountry.dataset.provinces;
+      const arrayOfProvince = JSON.parse(provinces);
+      const provinceContainer = document.querySelector(`#AddressProvinceContainer${select.dataset.id}`);
+      const provinceSelector = document.querySelector(`#AddressProvince${select.dataset.id}`);
+
+      if(arrayOfProvince < 1) {
+        provinceContainer.style.display = "none";
+      } else {
+        provinceContainer.style.display = "block";
+      }
+
+      provinceSelector.innerHTML = '';
+      let options = '';
+      for(let index = 0; index < arrayOfProvince.length; index++) {
+        if(arrayOfProvince[index][0] === provinceSelector.getAttribute('value')) {
+          options += `<option value="${arrayOfProvince[index][0]}" selected>${arrayOfProvince[index][0]}</option>`;
+        } else {
+          options += `<option value="${arrayOfProvince[index][0]}">${arrayOfProvince[index][0]}</option>`;
+        }
+      }
+      provinceSelector.innerHTML = options;
+    });
   }
 
-  _handleAddEditButtonClick = ({ currentTarget }) => {
-    this._toggleExpanded(currentTarget);
-  };
-
-  _handleCancelButtonClick = ({ currentTarget }) => {
-    this._toggleExpanded(currentTarget.closest(selectors.addressContainer).querySelector(`[${attributes.expanded}]`));
-  };
-
-  _handleDeleteButtonClick = ({ currentTarget }) => {
-    // eslint-disable-next-line no-alert
-    if (confirm(currentTarget.getAttribute(attributes.confirmMessage))) {
-      Shopify.postLink(currentTarget.dataset.target, {
-        parameters: { _method: 'delete' },
-      });
+  getSelectedCountry(select) {
+    let option;
+    let selectedOption;
+    for (let index = 0; index < select.options.length; index++) {
+      option = select.options[index];
+      if(option.value === select.getAttribute('value')) {
+        selectedOption = option;
+        selectedOption.setAttribute('selected', 'selected');
+        break;
+      }
     }
-  };
+    return selectedOption;
+  }
+
+  handleCountryProvincesOnSelect = ({ currentTarget }) => {
+    const provinces = currentTarget.options[currentTarget.selectedIndex].dataset.provinces;
+    const arrayOfProvince = JSON.parse(provinces);
+    const provinceContainer = document.querySelector(`#AddressProvinceContainer${currentTarget.dataset.id}`);
+    const provinceSelector = document.querySelector(`#AddressProvince${currentTarget.dataset.id}`);
+
+    if(arrayOfProvince < 1) {
+      provinceContainer.style.display = "none";
+    } else {
+      provinceContainer.style.display = "block";
+    }
+
+    provinceSelector.innerHTML = '';
+    let options = '';
+    for(let index = 0; index < arrayOfProvince.length; index++) {
+      options += `<option value="${arrayOfProvince[index][0]}">${arrayOfProvince[index][0]}</option>`;
+    }
+    provinceSelector.innerHTML = options;
+  }
+
+  showAddressModal(target) {
+    target.setAttribute(
+      attributes.expanded,
+      (target.getAttribute(attributes.expanded) === 'false').toString()
+    );
+  }
+
+  hideAddressModal(target) {
+    target.setAttribute(attributes.expanded, 'false');
+  }
+
+  fixScroll() {
+    const { customerBody } = selectors;
+    customerBody.style.overflowY = "hidden";
+    this.elements.addressScroll.scroll({top:0,behavior:'auto'});
+  }
+
+  releaseScroll() {
+    const { customerBody } = selectors;
+    customerBody.style.overflowY = "";
+  }
+
+  handleShowAddressModalOnButtonClick = () => {
+    this.fixScroll();
+    this.showAddressModal(this.elements.addressModal);
+  }
+
+  handleEditAddressModalOnButtonClick = ({ currentTarget }) => {
+    const id = currentTarget.dataset.id;
+    const target = document.querySelector(`#${id}`);
+    this.fixScroll();
+    this.showAddressModal(target);
+  }
+
+  handleCloseAddressModalOnButtonClick = (event) => {
+    event.preventDefault();
+    const id = event.currentTarget.dataset.id;
+    const target = document.querySelector(`#${id}`);
+    this.releaseScroll();
+    this.hideAddressModal(target);
+  }
+
+  handleDeleteAddressOnButtonClick = ({ currentTarget }) => {
+    const url = currentTarget.dataset.url;
+    const txt = currentTarget.dataset.confirmation;
+    const confirmation = window.confirm(txt);
+    if (confirmation) { document.querySelector(`form[action="${url}"]`).submit(); }
+  }
+
 }
