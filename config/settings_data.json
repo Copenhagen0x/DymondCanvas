@@ -149,14 +149,14 @@
           "announcement-0": {
             "type": "announcement",
             "settings": {
-              "text": "Free worldwide shipping on all orders",
+              "text": "Free US shipping on orders starting from $249.99",
               "link": ""
             }
           },
           "announcement-1": {
             "type": "announcement",
             "settings": {
-              "text": "New iPhone 14 Cases Are Here! <span class=\"strong\">SHOP NOW<\/span>",
+              "text": "Bring Your Walls to Life: Discover the Perfect Canvas for Every Space!",
               "link": "shopify:\/\/collections\/iphone-cases"
             }
           }
@@ -166,7 +166,7 @@
           "announcement-1"
         ],
         "settings": {
-          "color_scheme": "background-2"
+          "color_scheme": "background-4"
         }
       },
       "message": {
