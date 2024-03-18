@@ -3,12 +3,12 @@
     "hero-banner": {
       "type": "hero-banner",
       "settings": {
-        "heading": "A Week<br>in New York",
-        "sub_heading": "Show your love to NYC Art every day new.",
+        "heading": "Art<br>That Speaks to You",
+        "sub_heading": "Transform Your Space with Art: Explore Our Unique Canvas Collection Today!",
         "button": "Shop",
         "link": "",
-        "image_mobile": "",
-        "image_desktop": ""
+        "image_mobile": "shopify:\/\/shop_images\/BANER_8_1e5fe672-eb0c-467e-b12b-c51bd276e158.jpg",
+        "image_desktop": "shopify:\/\/shop_images\/BANER_8_1e5fe672-eb0c-467e-b12b-c51bd276e158.jpg"
       }
     },
     "featured-collection": {
@@ -27,14 +27,9 @@
       "type": "teaser-banner",
       "settings": {
         "title": "Featuring Robhisattwa",
-        "image_large": "",
         "heading": "Mens Graphic Tees",
         "button": "Shop",
-        "link": "shopify:\/\/collections\/robhisattwa",
-        "image_small_1": "",
-        "image_small_2": "",
-        "image_small_3": "",
-        "image_small_4": ""
+        "link": "shopify:\/\/collections\/robhisattwa"
       }
     },
     "featured-sections": {
@@ -44,8 +39,6 @@
           "type": "headline",
           "settings": {
             "title": "Urban Art Mugs",
-            "image_mobile": "",
-            "image_desktop": "",
             "button": "Shop",
             "url": ""
           }
@@ -54,8 +47,6 @@
           "type": "headline",
           "settings": {
             "title": "Stay Golden Mugs",
-            "image_mobile": "",
-            "image_desktop": "",
             "button": "Shop",
             "url": ""
           }
@@ -91,7 +82,6 @@
           "type": "headline",
           "settings": {
             "title": "Latest Wall Art",
-            "image": "",
             "button": "Shop",
             "url": ""
           }
@@ -100,7 +90,6 @@
           "type": "headline",
           "settings": {
             "title": "Latest Tech",
-            "image": "",
             "button": "Shop",
             "url": ""
           }
@@ -109,7 +98,6 @@
           "type": "headline",
           "settings": {
             "title": "Latest Apparel",
-            "image": "",
             "button": "Shop",
             "url": ""
           }
@@ -118,7 +106,6 @@
           "type": "headline",
           "settings": {
             "title": "Latest Living",
-            "image": "",
             "button": "Shop",
             "url": ""
           }
@@ -165,56 +152,48 @@
         "featured-affiliates-1": {
           "type": "headline",
           "settings": {
-            "image": "",
             "url": ""
           }
         },
         "featured-affiliates-2": {
           "type": "headline",
           "settings": {
-            "image": "",
             "url": ""
           }
         },
         "featured-affiliates-3": {
           "type": "headline",
           "settings": {
-            "image": "",
             "url": ""
           }
         },
         "featured-affiliates-4": {
           "type": "headline",
           "settings": {
-            "image": "",
             "url": ""
           }
         },
         "featured-affiliates-5": {
           "type": "headline",
           "settings": {
-            "image": "",
             "url": ""
           }
         },
         "featured-affiliates-6": {
           "type": "headline",
           "settings": {
-            "image": "",
             "url": ""
           }
         },
         "featured-affiliates-7": {
           "type": "headline",
           "settings": {
-            "image": "",
             "url": ""
           }
         },
         "featured-affiliates-8": {
           "type": "headline",
           "settings": {
-            "image": "",
             "url": ""
           }
         }

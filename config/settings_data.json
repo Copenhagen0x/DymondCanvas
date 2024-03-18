@@ -146,24 +146,24 @@
       "announcement": {
         "type": "announcement",
         "blocks": {
-          "announcement-0": {
-            "type": "announcement",
-            "settings": {
-              "text": "Free US shipping on orders starting from $249.99",
-              "link": ""
-            }
-          },
           "announcement-1": {
             "type": "announcement",
             "settings": {
               "text": "Bring Your Walls to Life: Discover the Perfect Canvas for Every Space!",
               "link": "shopify:\/\/collections\/iphone-cases"
             }
+          },
+          "announcement-0": {
+            "type": "announcement",
+            "settings": {
+              "text": "Free US shipping on orders starting from $249.99",
+              "link": ""
+            }
           }
         },
         "block_order": [
-          "announcement-0",
-          "announcement-1"
+          "announcement-1",
+          "announcement-0"
         ],
         "settings": {
           "color_scheme": "background-4"
