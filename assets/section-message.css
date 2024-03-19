@@ -54,21 +54,27 @@
 
 .message-box_icon {
   float: left;
-  width: 96px;
-  height: 96px;
+  width: 60px;
+  height: 48px;
 }
 
 .message-box_content {
   display: inline-block;
-  width: calc(100% - 96px);
+  width: calc(100% - 60px);
   height: auto;
   padding-right: 5px;
 }
 
 .message-box_icon .icon-message-svg {
+  width: 48px;
+  height: 48px;
+}
+
+.icon-message-three.liquid {
   width: 96px;
   height: 96px;
 }
+
 
 .message-box .headline-4 {
   margin: 0.5rem 0;
