@@ -54,13 +54,13 @@
 
 .message-box_icon {
   float: left;
-  width: 60px;
-  height: 48px;
+  width: 96px;
+  height: 96px;
 }
 
 .message-box_content {
   display: inline-block;
-  width: calc(100% - 60px);
+  width: calc(100% - 96px);
   height: auto;
   padding-right: 5px;
 }
